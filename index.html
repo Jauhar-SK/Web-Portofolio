@@ -189,20 +189,21 @@ btns.forEach(b => b.addEventListener("click", () => {
 
 /* ===== Battle ===== */
 const rnd = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
-const MAX = 30;
+const PMAX = 30, MMAX = 50;
 let ph, mh, heals, over, logs;
 const $ = id => document.getElementById(id);
 function draw(){
-  $("phT").textContent = Math.max(ph,0)+"/"+MAX; $("mhT").textContent = Math.max(mh,0)+"/"+MAX;
-  $("phB").style.width = Math.max(ph,0)/MAX*100+"%"; $("mhB").style.width = Math.max(mh,0)/MAX*100+"%";
+  $("phT").textContent = Math.max(ph,0)+"/"+PMAX; $("mhT").textContent = Math.max(mh,0)+"/"+MMAX;
+  $("phB").style.width = Math.max(ph,0)/PMAX*100+"%"; $("mhB").style.width = Math.max(mh,0)/MMAX*100+"%";
   $("atk").disabled = over; $("heal").disabled = over || heals===0;
   $("heal").textContent = "Debug ("+heals+")";
   $("log").innerHTML = logs.slice(-5).map(l=>"<div>"+l+"</div>").join("");
 }
-function reset(){ ph=MAX; mh=MAX; heals=3; over=false; logs=["Segfault muncul."]; draw(); }
+function reset(){ ph=PMAX; mh=MMAX; heals=2; over=false; logs=["Segfault muncul. Yang ini lebih kuat."]; draw(); }
 function foe(){
-  const d = rnd(3,6); ph -= d; logs.push("Segfault nyerang balik, HP kamu -"+d+".");
-  if(ph<=0){ over=true; logs.push("Kalah. Coba lagi aja."); }
+  let d = rnd(3,7); const crit = Math.random() < 0.15; if(crit) d *= 2;
+  ph -= d; logs.push((crit ? "Serangan kritis! " : "")+"Segfault nyerang balik, HP kamu -"+d+".");
+  if(ph<=0){ over=true; logs.push("Kalah. Coba lagi, atur kapan harus debug."); }
 }
 $("atk").onclick = () => {
   const d = rnd(6,10); mh -= d; logs.push("Kamu nyerang, Segfault kena "+d+".");
@@ -210,7 +211,7 @@ $("atk").onclick = () => {
   draw();
 };
 $("heal").onclick = () => {
-  const h = rnd(6,9); ph = Math.min(MAX, ph+h); heals--; logs.push("Kamu debug, HP naik "+h+".");
+  const h = rnd(6,9); ph = Math.min(PMAX, ph+h); heals--; logs.push("Kamu debug, HP naik "+h+".");
   foe(); draw();
 };
 $("reset").onclick = reset;
