@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jauhar Al Fahri | Portofolio</title>
+<meta name="description" content="Portofolio Jauhar Al Fahri, mahasiswa Teknik Informatika UNESA yang ingin jadi game developer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#12112a; --win:#201f48; --edge:#e9d9a6; --ink:#f2ecd5; --dim:#a9a6c9;
+  --gold:#f2c14e; --hp:#e0605e; --ok:#6fd49a; --line:#3b3a70;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:1rem;line-height:1.7;min-height:100vh;
+  background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:22px 22px}
+.px{font-family:"Press Start 2P",ui-monospace,monospace;line-height:1.6}
+.wrap{max-width:720px;margin:0 auto;padding:22px 16px 56px}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+a{color:var(--gold)}
+.win{background:var(--win);border:4px double var(--edge);border-radius:6px;padding:18px}
+h1{font-size:clamp(1rem,5vw,1.5rem);color:var(--gold)}
+h2{font-size:.8rem;color:var(--gold);margin-bottom:14px}
+.sub{color:var(--dim);margin-top:6px}
+
+/* dialog */
+#dlg{margin:18px 0;cursor:pointer;min-height:112px;position:relative;user-select:none}
+#dlg .who{font-size:.65rem;color:var(--gold);margin-bottom:8px}
+#dlg .arrow{position:absolute;right:14px;bottom:8px;color:var(--gold);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tabs button{flex:1 1 auto;background:var(--win);color:var(--dim);border:3px solid var(--line);border-radius:4px;padding:10px 8px;cursor:pointer;font-size:.6rem}
+.tabs button[aria-selected="true"]{color:var(--bg);background:var(--gold);border-color:var(--edge)}
+.tabs button:hover{color:var(--ink);border-color:var(--edge)}
+.tabs button[aria-selected="true"]:hover{color:var(--bg)}
+
+/* status */
+dl{display:grid;grid-template-columns:9em 1fr;gap:8px 12px}
+dt{color:var(--dim)}
+.bar{height:14px;background:#0d0c20;border:2px solid var(--edge);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);transition:width .25s}
+.bar.hp i{background:var(--hp)}
+
+/* list */
+.item{padding:10px 0;border-top:2px dashed var(--line)}
+.item:first-of-type{border-top:0}
+.item b{color:var(--gold)}
+.tag{font-size:.8rem;color:var(--bg);background:var(--dim);padding:1px 8px;border-radius:3px;margin-left:6px;white-space:nowrap}
+.tag.go{background:var(--gold)}.tag.done{background:var(--ok)}
+
+/* battle */
+.arena{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:560px){.arena{grid-template-columns:1fr 1fr}}
+.arena p{font-size:.9rem;margin-bottom:4px}
+.acts{display:flex;gap:10px;margin:16px 0 10px;flex-wrap:wrap}
+.acts button{background:var(--gold);color:var(--bg);border:3px solid var(--edge);border-radius:4px;padding:10px 14px;cursor:pointer;font-size:.6rem}
+.acts button:disabled{opacity:.4;cursor:not-allowed}
+#log{background:#0d0c20;border:2px solid var(--line);border-radius:4px;padding:10px 12px;min-height:110px;font-size:.92rem;color:var(--dim)}
+#log div:last-child{color:var(--ink)}
+
+footer{margin-top:28px;text-align:center;color:var(--dim);font-size:.85rem}
+@media(prefers-reduced-motion:reduce){#dlg .arrow{animation:none}.bar i{transition:none}}
+:root{--bg:#1e1410;--win:#e8d5a8;--edge:#5a3a1a;--ink:#2b1a0c;--dim:#6b4f33;--gold:#8c1c13;--hp:#a3261c;--ok:#3f6b2c;--line:#c4a974}
+body{font-family:Georgia,"Times New Roman",serif;font-size:1.05rem;background-image:repeating-linear-gradient(90deg,transparent 0 46px,rgba(0,0,0,.25) 46px 48px)}
+.px{font-family:Cinzel,Georgia,serif;letter-spacing:.04em}
+.win{border:5px double var(--edge);border-radius:3px}
+h1{font-size:1.8rem}h2{font-size:1.15rem}#dlg .who{font-size:1rem}
+.tabs button,.acts button{font-size:.85rem}
+.tabs button[aria-selected="true"],.acts button{color:#f3e6c4}
+.tabs button:hover{color:var(--ink)}.tabs button[aria-selected="true"]:hover{color:#f3e6c4}
+.tag{color:#f3e6c4}
+#log{background:#d9c391;border-color:var(--edge)}
+.bar{border-color:var(--edge)}
+footer{color:#d9c08c}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="win">
+    <h1 class="px">JAUHAR AL FAHRI</h1>
+    <p class="sub">Mahasiswa Teknik Informatika UNESA &middot; Angkatan 2026</p>
+  </header>
+
+  <div id="dlg" class="win" role="button" tabindex="0" aria-label="Lanjutkan dialog">
+    <div class="who px">Jauhar</div>
+    <div id="txt"></div>
+    <span class="arrow px" aria-hidden="true">&#9660;</span>
+  </div>
+
+  <div class="tabs px" role="tablist" aria-label="Menu">
+    <button role="tab" aria-selected="true" data-t="status">Status</button>
+    <button role="tab" aria-selected="false" data-t="inv">Inventory</button>
+    <button role="tab" aria-selected="false" data-t="quest">Quest</button>
+    <button role="tab" aria-selected="false" data-t="battle">Battle</button>
+    <button role="tab" aria-selected="false" data-t="kontak">Kontak</button>
+  </div>
+
+  <main>
+    <section id="status" class="win" role="tabpanel">
+      <h2 class="px">STATUS</h2>
+      <dl>
+        <dt>Nama</dt><dd>Jauhar Al Fahri</dd>
+        <dt>Prodi</dt><dd>Teknik Informatika</dd>
+        <dt>Level</dt><dd>1 (Semester 1)</dd>
+        <dt>Tujuan</dt><dd>Game developer dan game analyst</dd>
+        <dt>Cita-cita</dt><dd>Kerja di luar negeri</dd>
+        <dt>Pengalaman</dt><dd><div class="bar" role="img" aria-label="Pengalaman baru mulai"><i style="width:6%"></i></div></dd>
+      </dl>
+      <p style="margin-top:16px">Dari dulu saya suka game. Tapi sering diremehkan, katanya ngapain bikin game, gabakal nguntungin. Ya udah, tetap saya jalani. Sekarang saya kuliah di Informatika, dan targetnya masih sama: jadi game developer, syukur-syukur bisa kerja di luar negeri.</p>
+    </section>
+
+    <section id="inv" class="win" role="tabpanel" hidden>
+      <h2 class="px">INVENTORY</h2>
+      <div class="item"><b>C++</b><span class="tag go">senjata utama</span><br>Bahasa yang saya paham, dan mau saya pakai buat bikin game.</div>
+      <div class="item"><b>Kerja sama tim</b><span class="tag go">pasif</span><br>Bisa kerja bareng tim.</div>
+      <div class="item"><b>HTML, CSS, JavaScript</b><span class="tag">sedang dilatih</span><br>Baru belajar, dipakai buat web ini.</div>
+      <div class="item"><b>Git dan GitHub</b><span class="tag">sedang dilatih</span><br>Baru belajar juga, buat nyimpen dan ngumpulin kode.</div>
+    </section>
+
+    <section id="quest" class="win" role="tabpanel" hidden>
+      <h2 class="px">QUEST LOG</h2>
+      <div class="item"><b>Quest utama: Jadi game developer</b><span class="tag go">berjalan</span><br>Masih panjang. Dasar-dasarnya dulu.</div>
+      <div class="item"><b>Bikin web portofolio</b><span class="tag go">berjalan</span><br>Tugas Ameliorer. Kamu lagi lihat hasilnya.</div>
+      <div class="item"><b>Punya akun GitHub</b><span class="tag">belum</span><br>Belum bikin akun. Harus segera, soalnya dipakai buat ngumpulin tugas.</div>
+      <div class="item"><b>Bikin game pertama dengan C++</b><span class="tag">belum</span><br>Belum mulai. Rencananya yang simpel dulu, misalnya tebak angka di terminal.</div>
+      <div class="item"><b>Kerja di luar negeri</b><span class="tag">terkunci</span><br>Nanti dulu.</div>
+    </section>
+
+    <section id="battle" class="win" role="tabpanel" hidden>
+      <h2 class="px">BATTLE</h2>
+      <p>Ada bug nyangkut. Coba lawan.</p>
+      <div class="arena" style="margin-top:14px">
+        <div><p>Jauhar <span id="phT"></span></p><div class="bar hp"><i id="phB"></i></div></div>
+        <div><p>Segfault <span id="mhT"></span></p><div class="bar hp"><i id="mhB"></i></div></div>
+      </div>
+      <div class="acts px">
+        <button id="atk" type="button">Serang</button>
+        <button id="heal" type="button">Debug</button>
+        <button id="reset" type="button">Ulang</button>
+      </div>
+      <div id="log" aria-live="polite"></div>
+    </section>
+
+    <section id="kontak" class="win" role="tabpanel" hidden>
+      <h2 class="px">KONTAK</h2>
+      <p>Email: <a href="mailto:jauharalfahri01@gmail.com">jauharalfahri01@gmail.com</a></p>
+      <!-- Kalau sudah punya GitHub, hapus tanda komentar dan ganti Jauhar-SK:
+      <p>GitHub: <a href="https://github.com/Jauhar-SK" target="_blank" rel="noopener">github.com/Jauhar-SK</a></p>
+      -->
+    </section>
+  </main>
+
+  <footer>&copy; 2026 Jauhar Al Fahri</footer>
+</div>
+
+<script>
+/* ===== Dialog ===== */
+const lines = [
+  "Halo, saya Jauhar.",
+  "Anak Teknik Informatika UNESA, angkatan 2026. Masih semester 1, jadi masih Level 1.",
+  "Saya pengen jadi game developer. Lihat-lihat dulu aja, atau coba lawan bug di tab Battle."
+];
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const txt = document.getElementById("txt"), dlg = document.getElementById("dlg");
+let li = 0, timer;
+function say(){
+  clearInterval(timer);
+  const s = lines[li];
+  if(reduce){ txt.textContent = s; return; }
+  let i = 0; txt.textContent = "";
+  timer = setInterval(()=>{ txt.textContent = s.slice(0,++i); if(i>=s.length) clearInterval(timer); }, 22);
+}
+function next(){
+  if(txt.textContent.length < lines[li].length){ clearInterval(timer); txt.textContent = lines[li]; return; }
+  li = (li + 1) % lines.length; say();
+}
+dlg.addEventListener("click", next);
+dlg.addEventListener("keydown", e => { if(e.key==="Enter"||e.key===" "){ e.preventDefault(); next(); } });
+say();
+
+/* ===== Tabs ===== */
+const btns = document.querySelectorAll(".tabs button");
+btns.forEach(b => b.addEventListener("click", () => {
+  btns.forEach(x => x.setAttribute("aria-selected", x===b));
+  document.querySelectorAll("main section").forEach(s => s.hidden = s.id !== b.dataset.t);
+}));
+
+/* ===== Battle ===== */
+const rnd = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+const MAX = 30;
+let ph, mh, heals, over, logs;
+const $ = id => document.getElementById(id);
+function draw(){
+  $("ph	T").textContent = Math.max(ph,0)+"/"+MAX; $("mhT").textContent = Math.max(mh,0)+"/"+MAX;
+  $("phB").style.width = Math.max(ph,0)/MAX*100+"%"; $("mhB").style.width = Math.max(mh,0)/MAX*100+"%";
+  $("atk").disabled = over; $("heal").disabled = over || heals===0;
+  $("heal").textContent = "Debug ("+heals+")";
+  $("log").innerHTML = logs.slice(-5).map(l=>"<div>"+l+"</div>").join("");
+}
+function reset(){ ph=MAX; mh=MAX; heals=3; over=false; logs=["Segfault muncul."]; draw(); }
+function foe(){
+  const d = rnd(3,6); ph -= d; logs.push("Segfault nyerang balik, HP kamu -"+d+".");
+  if(ph<=0){ over=true; logs.push("Kalah. Coba lagi aja."); }
+}
+$("atk").onclick = () => {
+  const d = rnd(6,10); mh -= d; logs.push("Kamu nyerang, Segfault kena "+d+".");
+  if(mh<=0){ over=true; logs.push("Segfault kalah. Programnya jalan lagi."); } else foe();
+  draw();
+};
+$("heal").onclick = () => {
+  const h = rnd(6,9); ph = Math.min(MAX, ph+h); heals--; logs.push("Kamu debug, HP naik "+h+".");
+  foe(); draw();
+};
+$("reset").onclick = reset;
+reset();
+</script>
+</body>
+</html>
