@@ -75,17 +75,6 @@ h1{font-size:1.8rem}h2{font-size:1.15rem}#dlg .who{font-size:1rem}
 #log{background:#d9c391;border-color:var(--edge)}
 .bar{border-color:var(--edge)}
 footer{color:#d9c08c}
-
-/* game */
-.acts button.on{outline:3px solid var(--ink)}
-.gmsg{margin:8px 0;min-height:1.7em}
-#cv{display:block;width:100%;max-width:300px;aspect-ratio:1;background:#1e1410;border:3px solid var(--edge);touch-action:none}
-.dpad{display:grid;grid-template-columns:repeat(3,58px);grid-template-rows:repeat(2,50px);gap:6px;margin-top:12px}
-.dpad button{background:var(--gold);color:#f3e6c4;border:3px solid var(--edge);border-radius:4px;cursor:pointer;font-size:1.1rem}
-#bu{grid-column:2;grid-row:1}#bl{grid-column:1;grid-row:2}#bd{grid-column:2;grid-row:2}#br{grid-column:3;grid-row:2}
-#mg{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;max-width:340px}
-#mg button{aspect-ratio:1;padding:0;font:bold 1.05rem ui-monospace,Menlo,monospace;cursor:pointer;background:var(--win);border:2px solid var(--edge);border-radius:3px}
-#mg button.o{background:var(--line);border-color:transparent;cursor:default}
 </style>
 </head>
 <body>
@@ -107,7 +96,6 @@ footer{color:#d9c08c}
     <button role="tab" aria-selected="false" data-t="inv">Inventory</button>
     <button role="tab" aria-selected="false" data-t="quest">Quest</button>
     <button role="tab" aria-selected="false" data-t="battle">Battle</button>
-    <button role="tab" aria-selected="false" data-t="game">Game</button>
     <button role="tab" aria-selected="false" data-t="kontak">Kontak</button>
   </div>
 
@@ -155,25 +143,6 @@ footer{color:#d9c08c}
         <button id="reset" type="button">Ulang</button>
       </div>
       <div id="log" aria-live="polite"></div>
-    </section>
-
-    <section id="game" class="win" role="tabpanel" hidden>
-      <h2 class="px">GAME</h2>
-      <p>Dua game kecil buat selingan, dibuat pakai JavaScript.</p>
-      <div class="acts px"><button id="gs" class="on" type="button">Snake</button><button id="gm" type="button">Minesweeper</button></div>
-      <div id="snk">
-        <p class="gmsg" id="smsg"></p>
-        <canvas id="cv" width="300" height="300" aria-label="Papan Snake"></canvas>
-        <div class="acts px"><button id="sgo" type="button">Mulai</button></div>
-        <div class="dpad"><button id="bu" type="button" aria-label="Atas">&#9650;</button><button id="bl" type="button" aria-label="Kiri">&#9664;</button><button id="bd" type="button" aria-label="Bawah">&#9660;</button><button id="br" type="button" aria-label="Kanan">&#9654;</button></div>
-        <p class="gmsg">Geser di papan atau pakai tombol panah.</p>
-      </div>
-      <div id="mns" hidden>
-        <p class="gmsg" id="mmsg"></p>
-        <div id="mg"></div>
-        <div class="acts px"><button id="mmode" type="button">Mode: Buka</button><button id="mrst" type="button">Ulang</button></div>
-        <p class="gmsg">Ketuk petak untuk membuka. Ganti ke mode Bendera untuk menandai ranjau.</p>
-      </div>
     </section>
 
     <section id="kontak" class="win" role="tabpanel" hidden>
@@ -247,137 +216,6 @@ $("heal").onclick = () => {
 };
 $("reset").onclick = reset;
 reset();
-
-/* ===== Game kecil ===== */
-(function(){
-const g = id => document.getElementById(id);
-function show(w){
-  g("snk").hidden = w !== "s"; g("mns").hidden = w !== "m";
-  g("gs").classList.toggle("on", w === "s"); g("gm").classList.toggle("on", w === "m");
-  if(w !== "s") pause();
-}
-g("gs").onclick = () => show("s"); g("gm").onclick = () => show("m");
-document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => { if(b.dataset.t !== "game") pause(); }));
-
-/* Snake */
-const cv = g("cv"), cx = cv.getContext("2d"), N = 15, S = 20;
-let sn, dr, nd, food, sc, best = 0, alive, running = false, st;
-function smsg(t){ g("smsg").textContent = t; }
-function info(){ smsg("Skor: " + sc + "  |  Terbaik: " + best); }
-function newFood(){ do { food = {x: rnd(0,N-1), y: rnd(0,N-1)}; } while(sn.some(p => p.x === food.x && p.y === food.y)); }
-function paint(){
-  cx.fillStyle = "#1e1410"; cx.fillRect(0,0,N*S,N*S);
-  cx.fillStyle = "#e0605e"; cx.fillRect(food.x*S+2, food.y*S+2, S-4, S-4);
-  sn.forEach((p,i) => { cx.fillStyle = i ? "#8fc46a" : "#d6f0a8"; cx.fillRect(p.x*S+1, p.y*S+1, S-2, S-2); });
-}
-function sInit(){
-  sn = [{x:7,y:7},{x:6,y:7},{x:5,y:7}]; dr = {x:1,y:0}; nd = dr; sc = 0; alive = true; running = false;
-  clearTimeout(st); newFood(); paint(); info(); g("sgo").textContent = "Mulai";
-}
-function tick(){
-  if(!running) return;
-  dr = nd;
-  const h = {x: sn[0].x + dr.x, y: sn[0].y + dr.y};
-  if(h.x < 0 || h.y < 0 || h.x >= N || h.y >= N || sn.some(p => p.x === h.x && p.y === h.y)){
-    alive = false; running = false; if(sc > best) best = sc;
-    smsg("Game over. Skor " + sc + ", terbaik " + best + "."); g("sgo").textContent = "Main lagi"; return;
-  }
-  sn.unshift(h);
-  if(h.x === food.x && h.y === food.y){ sc++; newFood(); info(); } else sn.pop();
-  paint();
-  st = setTimeout(tick, Math.max(70, 140 - sc*4));
-}
-function go(){ if(running) return; if(!alive) sInit(); running = true; g("sgo").textContent = "Jeda"; tick(); }
-function pause(){ if(!running) return; running = false; clearTimeout(st); g("sgo").textContent = "Lanjut"; }
-function turn(x,y){ if(!alive) return; if(x === -dr.x && y === -dr.y) return; nd = {x:x, y:y}; if(!running) go(); }
-g("sgo").onclick = () => running ? pause() : go();
-g("bu").onclick = () => turn(0,-1); g("bd").onclick = () => turn(0,1);
-g("bl").onclick = () => turn(-1,0); g("br").onclick = () => turn(1,0);
-document.addEventListener("keydown", e => {
-  if(g("game").hidden || g("snk").hidden) return;
-  const k = {ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0],w:[0,-1],s:[0,1],a:[-1,0],d:[1,0]}[e.key];
-  if(Array.isArray(k)){ e.preventDefault(); turn(k[0], k[1]); }
-});
-let tx = 0, ty = 0;
-cv.addEventListener("touchstart", e => { const t = e.touches[0]; tx = t.clientX; ty = t.clientY; }, {passive:true});
-cv.addEventListener("touchend", e => {
-  const t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty;
-  if(Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
-  if(Math.abs(dx) > Math.abs(dy)) turn(dx > 0 ? 1 : -1, 0); else turn(0, dy > 0 ? 1 : -1);
-}, {passive:true});
-
-/* Minesweeper */
-const R = 9, C = 9, MN = 10, NUMC = ["","#2b5fc7","#2f7a2f","#b32424","#4b2b8c","#7a2b2b","#1f7a7a","#222","#555"];
-let bd, first, done, flagMode, flags, opened;
-function nb(i){
-  const r = Math.floor(i / C), c = i % C, out = [];
-  for(let a = -1; a <= 1; a++) for(let b = -1; b <= 1; b++){
-    if(!a && !b) continue;
-    const y = r + a, x = c + b;
-    if(y >= 0 && y < R && x >= 0 && x < C) out.push(y*C + x);
-  }
-  return out;
-}
-function mstat(t){ g("mmsg").textContent = t || ("Ranjau tersisa: " + (MN - flags)); }
-function mInit(){
-  bd = Array.from({length: R*C}, () => ({m:false, r:false, f:false, n:0}));
-  first = true; done = false; flags = 0; opened = 0; flagMode = false;
-  g("mmode").textContent = "Mode: Buka";
-  g("mg").innerHTML = bd.map((_, i) => '<button type="button" data-i="' + i + '" aria-label="petak"></button>').join("");
-  mstat();
-}
-function upd(){
-  const bs = g("mg").children;
-  bd.forEach((c, i) => {
-    const b = bs[i]; let t = "";
-    b.className = c.r ? "o" : "";
-    if(c.r){ t = c.m ? "*" : (c.n || ""); b.style.color = c.m ? "#a3261c" : NUMC[c.n]; }
-    else if(c.f){ t = "F"; b.style.color = "#8c1c13"; }
-    else b.style.color = "";
-    b.textContent = t;
-  });
-}
-function plant(safe){
-  const ban = new Set([safe].concat(nb(safe)));
-  let n = 0;
-  while(n < MN){ const i = rnd(0, R*C - 1); if(ban.has(i) || bd[i].m) continue; bd[i].m = true; n++; }
-  bd.forEach((c, i) => { c.n = nb(i).filter(k => bd[k].m).length; });
-}
-function open(i){
-  if(bd[i].f || bd[i].r) return;
-  if(bd[i].m){
-    done = true; bd.forEach(c => { if(c.m) c.r = true; });
-    mstat("Kena ranjau. Coba lagi."); return;
-  }
-  const st2 = [i];
-  while(st2.length){
-    const j = st2.pop();
-    if(bd[j].r || bd[j].f) continue;
-    bd[j].r = true; opened++;
-    if(bd[j].n === 0) nb(j).forEach(k => { if(!bd[k].r) st2.push(k); });
-  }
-  if(opened === R*C - MN){
-    done = true; flags = MN; bd.forEach(c => { if(c.m) c.f = true; });
-    mstat("Menang! Semua ranjau berhasil dihindari.");
-  } else mstat();
-}
-function flag(i){ if(bd[i].r) return; bd[i].f = !bd[i].f; flags += bd[i].f ? 1 : -1; mstat(); }
-g("mg").addEventListener("click", e => {
-  const b = e.target.closest("button"); if(!b || done) return;
-  const i = +b.dataset.i;
-  if(flagMode) flag(i);
-  else { if(bd[i].f) return; if(first){ plant(i); first = false; } open(i); }
-  upd();
-});
-g("mg").addEventListener("contextmenu", e => {
-  e.preventDefault(); const b = e.target.closest("button"); if(!b || done) return;
-  flag(+b.dataset.i); upd();
-});
-g("mmode").onclick = () => { flagMode = !flagMode; g("mmode").textContent = "Mode: " + (flagMode ? "Bendera" : "Buka"); };
-g("mrst").onclick = () => { mInit(); upd(); };
-
-sInit(); mInit();
-})();
 </script>
 </body>
 </html>
