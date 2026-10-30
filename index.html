@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jauhar Al Fahri | Portofolio</title>
+<meta name="description" content="Portofolio Jauhar Al Fahri, mahasiswa Teknik Informatika UNESA yang bercita-cita menjadi game developer.">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c1e;
+    --panel: #12163a;
+    --panel2: #1a1f4c;
+    --line: #2d3668;
+    --cyan: #52e3ff;
+    --gold: #f4c96b;
+    --rose: #ff6b95;
+    --text: #e9ecff;
+    --muted: #9aa3d6;
+    --hud: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+  body {
+    margin: 0;
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    line-height: 1.65;
+    color: var(--text);
+    background:
+      radial-gradient(900px 520px at 88% -8%, rgba(82,227,255,.15), transparent 60%),
+      radial-gradient(700px 520px at -10% 35%, rgba(244,201,107,.08), transparent 60%),
+      var(--bg);
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      repeating-linear-gradient(60deg, rgba(255,255,255,.03) 0 1px, transparent 1px 38px),
+      repeating-linear-gradient(-60deg, rgba(255,255,255,.03) 0 1px, transparent 1px 38px);
+  }
+  h1, h2, h3 { font-family: var(--hud); margin: 0; line-height: 1.1; }
+  a { color: var(--cyan); }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  /* panel ala HUD game */
+  .panel { position: relative; background: linear-gradient(180deg, var(--panel2), var(--panel)); border: 1px solid var(--line); padding: 22px; }
+  .panel::before, .panel::after { content: ""; position: absolute; width: 16px; height: 16px; border: 2px solid var(--gold); pointer-events: none; }
+  .panel::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+  .panel::after { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+
+  /* HUD atas */
+  .hud { position: sticky; top: 0; z-index: 10; background: rgba(10,12,30,.93); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .hud .wrap { display: flex; align-items: center; justify-content: space-between; gap: 14px 28px; flex-wrap: wrap; padding-top: 10px; padding-bottom: 10px; }
+  .player { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+  .lv { font-family: var(--hud); font-weight: 700; font-size: .85rem; color: #1a1300; background: var(--gold); padding: 2px 12px 2px 8px; clip-path: polygon(0 0, 100% 0, 100% 60%, 84% 100%, 0 100%); }
+  .pname { font-family: var(--hud); font-weight: 600; }
+  .exp { width: 110px; height: 6px; background: #222a5c; }
+  .exp i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cyan), var(--gold)); }
+  nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; flex-wrap: wrap; }
+  nav a { display: block; font-family: var(--hud); font-weight: 500; text-decoration: none; color: var(--muted); padding: 4px 12px; border: 1px solid transparent; }
+  nav a:hover { color: var(--text); border-color: var(--line); background: var(--panel); }
+
+  /* hero */
+  .hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 44px; align-items: center; padding: 60px 0 28px; }
+  .hello { color: var(--cyan); font-family: var(--hud); margin: 0 0 10px; }
+  h1 { font-size: clamp(3rem, 10vw, 6rem); font-weight: 700; letter-spacing: -.01em; text-shadow: 0 0 30px rgba(82,227,255,.3); }
+  .lead { font-size: 1.1rem; max-width: 46ch; margin: 20px 0 26px; color: #cfd5ff; }
+  .btns { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { display: inline-block; font-family: var(--hud); font-weight: 600; font-size: 1rem; text-decoration: none; cursor: pointer; padding: 11px 24px 11px 20px; border: 0; color: #08111a; background: var(--cyan); clip-path: polygon(0 0, 100% 0, 100% 68%, 92% 100%, 0 100%); }
+  .btn.alt { background: var(--gold); }
+  .btn:hover { filter: brightness(1.12); }
+
+  /* rank ladder */
+  .rank { padding: 6px 0 40px; }
+  .rank ol { list-style: none; margin: 0 0 10px; padding: 0; display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .rk { width: 100%; font-family: var(--hud); font-size: .78rem; text-align: center; padding: 9px 2px; background: #181d49; color: var(--muted); border: 0; border-bottom: 3px solid var(--line); cursor: pointer; }
+  .rk:hover { color: var(--text); background: #20266a; }
+  .rk.now { background: var(--cyan); color: #06111a; font-weight: 700; border-bottom-color: #fff; }
+  .rk.last { color: var(--gold); border-bottom-color: var(--gold); }
+  .rk[aria-pressed="true"] { outline: 2px solid var(--gold); outline-offset: 1px; }
+  .rankinfo { margin: 0; min-height: 3.4em; padding: 10px 14px; color: #cfd5ff; border-left: 3px solid var(--gold); background: rgba(18,22,58,.75); }
+
+  /* kartu karakter */
+  .card-wrap { perspective: 900px; justify-self: center; width: 100%; max-width: 340px; }
+  .char { position: relative; transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .15s ease-out; background: linear-gradient(160deg, #232a66, #101436 60%); border: 2px solid var(--gold); padding: 20px; box-shadow: 0 0 0 4px #0a0c1e, 0 0 40px rgba(82,227,255,.18); }
+  .char::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.1) 50%, transparent 65%); background-size: 250% 100%; background-position: var(--sx, 120%) 0; }
+  .char-top { display: flex; justify-content: space-between; font-family: var(--hud); font-weight: 600; font-size: .9rem; }
+  .char-top .cls { color: var(--cyan); }
+  .char-top .l { color: var(--gold); }
+  .emblem { display: block; width: 150px; margin: 10px auto 6px; }
+  .char h2 { text-align: center; font-size: 1.5rem; margin-bottom: 14px; }
+  .gear { margin: 0; display: grid; gap: 0; }
+  .gear div { display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-top: 1px solid var(--line); font-size: .92rem; }
+  .gear dt { color: var(--muted); }
+  .gear dd { margin: 0; text-align: right; font-weight: 500; }
+
+  /* seksi */
+  section { padding: 52px 0 8px; }
+  h2.sec { font-size: clamp(1.7rem, 4vw, 2.4rem); display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; padding-left: 14px; border-left: 5px solid var(--gold); }
+  h2.sec small { font-family: "IBM Plex Sans", sans-serif; font-size: 1rem; font-weight: 400; color: var(--muted); }
+
+  /* lore */
+  .dialog { padding: 30px 26px 62px; max-width: 760px; }
+  .nametag { position: absolute; top: -15px; left: 22px; font-family: var(--hud); font-weight: 700; color: #1a1300; background: var(--gold); padding: 2px 16px 2px 12px; clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%); }
+  .dialog p { margin: 0 0 14px; max-width: 62ch; }
+  .dialog .next { position: absolute; right: 18px; bottom: 14px; font-family: var(--hud); font-weight: 600; color: var(--gold); background: transparent; border: 1px solid var(--gold); padding: 4px 14px; cursor: pointer; }
+  .dialog .next:hover { background: rgba(244,201,107,.15); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .hint { margin: -10px 0 16px; color: var(--muted); font-size: .92rem; }
+
+  /* quest */
+  .quests { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .q { display: grid; grid-template-columns: 104px 1fr; gap: 18px; align-items: start; background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--cyan); padding: 16px 18px; }
+  .q h3 { font-size: 1.2rem; margin-bottom: 4px; }
+  .q p { margin: 0 0 6px; color: #cfd5ff; }
+  .q .when { color: var(--muted); font-size: .88rem; }
+  .chip { font-family: var(--hud); font-weight: 700; font-size: .85rem; text-align: center; padding: 4px 8px; color: #06111a; background: var(--cyan); border: 0; cursor: pointer; }
+  .chip:hover { filter: brightness(1.15); }
+  .more { margin: 10px 0 0; padding: 8px 12px; border-left: 3px solid var(--cyan); background: rgba(82,227,255,.08); color: #cfd5ff; }
+  .q.active { border-left-color: var(--gold); }
+  .q.active .chip { background: var(--gold); }
+  .q.lock { border-style: dashed; border-left-style: solid; border-left-color: var(--line); opacity: .75; }
+  .q.lock .chip { background: var(--line); color: var(--muted); }
+
+  /* status */
+  .statgrid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 24px; }
+  .statgrid h3 { font-size: 1.15rem; margin-bottom: 14px; color: var(--gold); }
+  .stat { display: grid; grid-template-columns: 110px 1fr 54px; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .stat span { font-weight: 500; }
+  .stat b { font-family: var(--hud); color: var(--cyan); text-align: right; }
+  .bar { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; height: 14px; }
+  .bar i { background: #232a5c; transform: skewX(-18deg); }
+  .bar i.on { background: linear-gradient(180deg, var(--cyan), #2ba7c4); }
+  .note { margin: 0 0 14px; color: var(--muted); font-size: .92rem; }
+  .locked { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .locked button { display: flex; width: 100%; align-items: center; gap: 10px; padding: 10px 12px; border: 1px dashed var(--line); background: transparent; color: var(--muted); font: inherit; text-align: left; cursor: pointer; }
+  .locked button:hover { border-color: var(--gold); color: var(--text); }
+  .locked svg { width: 18px; height: 18px; flex: none; fill: var(--gold); }
+
+  /* gacha */
+  .gacha { display: grid; grid-template-columns: 1.1fr .9fr; gap: 28px; align-items: center; }
+  .pcard { min-height: 200px; display: grid; place-items: center; text-align: center; padding: 22px; border: 2px solid var(--line); background: #0e1230; }
+  .pcard p { margin: 0; font-size: 1.05rem; max-width: 34ch; }
+  .pcard .stars { display: block; font-family: var(--hud); font-weight: 700; margin-bottom: 10px; color: var(--muted); }
+  .pcard.r { border-color: var(--cyan); } .pcard.r .stars { color: var(--cyan); }
+  .pcard.sr { border-color: #c58bff; box-shadow: 0 0 26px rgba(197,139,255,.35); } .pcard.sr .stars { color: #c58bff; }
+  .pcard.ssr { border-color: var(--gold); box-shadow: 0 0 40px rgba(244,201,107,.55); } .pcard.ssr .stars { color: var(--gold); }
+  .pcard.spin { animation: flip .85s ease-in-out; }
+  @keyframes flip { 0% { transform: rotateY(0); } 50% { transform: rotateY(180deg) scale(.9); } 100% { transform: rotateY(360deg); } }
+  .pullctl { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 12px; }
+  .pullctl .btn:disabled { filter: grayscale(.8) brightness(.7); cursor: wait; }
+  #pullinfo { font-family: var(--hud); color: var(--gold); }
+  .slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; }
+  .slot { min-height: 44px; display: grid; place-items: center; text-align: center; padding: 2px; font-family: var(--hud); font-size: .78rem; color: var(--muted); border: 1px dashed var(--line); }
+  .slot.r { border: 1px solid var(--cyan); color: var(--cyan); }
+  .slot.sr { border: 1px solid #c58bff; color: #c58bff; }
+  .slot.ssr { border: 1px solid var(--gold); color: var(--gold); }
+
+  /* interaksi umum */
+  .toast { position: fixed; right: 18px; bottom: 18px; z-index: 20; max-width: 300px; padding: 12px 16px; background: var(--panel2); border: 1px solid var(--gold); font-family: var(--hud); opacity: 0; transform: translateY(12px); transition: opacity .25s, transform .25s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: none; }
+  .shake { animation: shake .4s; }
+  @keyframes shake { 0%, 100% { translate: 0; } 20% { translate: -7px; } 40% { translate: 7px; } 60% { translate: -5px; } 80% { translate: 5px; } }
+  .gcard:not(.locked) { transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .15s ease-out; }
+  .gcard.locked { cursor: pointer; }
+
+  /* deck project */
+  .deck { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+  .gcard { position: relative; display: flex; flex-direction: column; background: linear-gradient(170deg, #222863, #11153a 65%); border: 2px solid var(--cyan); box-shadow: 0 0 0 4px #0a0c1e; }
+  .gcard.locked { border-color: var(--line); border-style: dashed; filter: saturate(.5); }
+  .cost { position: absolute; top: -12px; left: -12px; width: 36px; height: 36px; display: grid; place-items: center; font-family: var(--hud); font-weight: 700; color: #08111a; background: var(--gold); clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
+  .art { aspect-ratio: 16/9; display: grid; place-items: center; font-family: var(--hud); font-weight: 700; font-size: 2.4rem; color: var(--cyan); background: repeating-linear-gradient(135deg, rgba(82,227,255,.1) 0 12px, transparent 12px 24px), radial-gradient(circle at 70% 30%, rgba(244,201,107,.25), transparent 60%), #0e1230; border-bottom: 2px solid var(--line); }
+  .gcard.locked .art { color: var(--muted); }
+  .gbody { display: flex; flex-direction: column; gap: 10px; padding: 16px 18px 18px; flex: 1; }
+  .gbody h3 { font-size: 1.3rem; }
+  .gbody p { margin: 0; color: #cfd5ff; }
+  .type { color: var(--gold) !important; font-family: var(--hud); font-size: .88rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .tags li { font-size: .82rem; padding: 1px 10px; border: 1px solid var(--cyan); color: var(--cyan); }
+  .links { margin-top: auto; display: flex; gap: 18px; font-weight: 500; padding-top: 6px; }
+
+  /* kontak */
+  .contact { display: grid; grid-template-columns: .9fr 1.1fr; gap: 24px; }
+  .ids { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .ids li { padding: 12px 14px; background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--gold); }
+  .ids span { display: block; color: var(--muted); font-size: .85rem; }
+  .ids a { word-break: break-all; }
+  form { display: grid; gap: 14px; }
+  label { display: grid; gap: 4px; font-weight: 500; }
+  input, textarea { font: inherit; color: var(--text); background: #0c1030; border: 1px solid var(--line); padding: 10px 12px; }
+  textarea { min-height: 110px; resize: vertical; }
+  #status { min-height: 1.4em; color: var(--gold); font-weight: 500; }
+
+  footer { margin-top: 56px; border-top: 1px solid var(--line); padding: 22px 0 44px; color: var(--muted); font-size: .88rem; }
+  footer p { margin: 0 0 6px; }
+
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; padding-top: 38px; }
+    .statgrid, .contact { grid-template-columns: 1fr; }
+    .q { grid-template-columns: 1fr; gap: 8px; }
+    .chip { justify-self: start; padding: 2px 14px; }
+    .stat { grid-template-columns: 84px 1fr 48px; }
+    .rk { font-size: .62rem; }
+    .gacha { grid-template-columns: 1fr; }
+    .exp { width: 80px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .char, .gcard:not(.locked), .toast { transition: none; }
+    .shake, .pcard.spin { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-lock" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z"/></symbol>
+</svg>
+
+<header class="hud">
+  <div class="wrap">
+    <a class="player" href="#atas" aria-label="Kembali ke atas">
+      <span class="lv" id="lvhud">Lv. 1</span>
+      <span class="pname">Jauhar Al Fahri</span>
+      <span class="exp" role="progressbar" aria-label="Progres membaca halaman" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="exp"></i></span>
+    </a>
+    <nav aria-label="Menu utama">
+      <ul>
+        <li><a href="#lore">Lore</a></li>
+        <li><a href="#quest">Quest</a></li>
+        <li><a href="#status">Status</a></li>
+        <li><a href="#gacha">Gacha</a></li>
+        <li><a href="#deck">Deck</a></li>
+        <li><a href="#kontak">Kontak</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="atas" class="wrap">
+
+  <div class="hero">
+    <div>
+      <p class="hello">Halo, player! Selamat datang di portofolio saya.</p>
+      <h1>Jauhar<br>Al Fahri</h1>
+      <p class="lead">Mahasiswa Teknik Informatika UNESA angkatan 2026. Sedang naik level sebagai programmer, dengan tujuan akhir menjadi game developer.</p>
+      <div class="btns">
+        <a class="btn" href="#quest">Mulai petualangan</a>
+        <a class="btn alt" href="#deck">Lihat deck project</a>
+      </div>
+    </div>
+
+    <div class="card-wrap" id="cardwrap">
+      <article class="char" id="char" aria-label="Kartu karakter Jauhar Al Fahri">
+        <div class="char-top"><span class="cls">Class: Programmer</span><span class="l" id="lvcard">Lv. 1</span></div>
+        <svg class="emblem" viewBox="0 0 140 140" role="img" aria-label="Lambang heksagon dengan huruf J">
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#52e3ff"/><stop offset="1" stop-color="#f4c96b"/></linearGradient>
+          </defs>
+          <polygon points="70,6 126,38 126,102 70,134 14,102 14,38" fill="#0c1030" stroke="url(#g1)" stroke-width="3"/>
+          <polygon points="70,24 110,47 110,93 70,116 30,93 30,47" fill="none" stroke="#2d3668" stroke-width="2"/>
+          <path d="M70 24 L110 47 M70 116 L30 93" stroke="#2d3668" stroke-width="2"/>
+          <text x="70" y="92" text-anchor="middle" font-family="Chakra Petch, sans-serif" font-weight="700" font-size="64" fill="url(#g1)">J</text>
+        </svg>
+        <h2>Jauhar Al Fahri</h2>
+        <dl class="gear">
+          <div><dt>Senjata utama</dt><dd>C++</dd></div>
+          <div><dt>Editor</dt><dd>VS Code</dd></div>
+          <div><dt>Guild</dt><dd>Teknik Informatika UNESA</dd></div>
+          <div><dt>Party</dt><dd>02-Encryption</dd></div>
+          <div><dt>Tujuan akhir</dt><dd>Game Developer</dd></div>
+        </dl>
+      </article>
+    </div>
+  </div>
+
+  <div class="rank">
+    <ol aria-label="Perjalanan rank karier">
+      <li><button type="button" class="rk now" aria-pressed="true">Warrior</button></li>
+      <li><button type="button" class="rk" aria-pressed="false">Elite</button></li>
+      <li><button type="button" class="rk" aria-pressed="false">Master</button></li>
+      <li><button type="button" class="rk" aria-pressed="false">Grandmaster</button></li>
+      <li><button type="button" class="rk" aria-pressed="false">Epic</button></li>
+      <li><button type="button" class="rk" aria-pressed="false">Legend</button></li>
+      <li><button type="button" class="rk last" aria-pressed="false">Mythic</button></li>
+    </ol>
+    <p class="rankinfo" id="rankinfo" aria-live="polite">Klik tiap rank untuk melihat perjalanannya.</p>
+  </div>
+
+  <section id="lore">
+    <h2 class="sec">Lore <small>Tentang saya</small></h2>
+    <div class="panel dialog" id="dialog">
+      <span class="nametag">Jauhar</span>
+      <p class="line">Halo, saya Jauhar Al Fahri, mahasiswa Teknik Informatika di Universitas Negeri Surabaya angkatan 2026. Saat ini saya sedang belajar dasar pemrograman dengan C++, dan saya tertarik sekali dengan dunia game.</p>
+      <p class="line">Cita-cita saya menjadi game developer. Saya juga tertarik menjadi game analyst, yaitu orang yang membaca data dan kebiasaan pemain supaya game terasa makin seru dan seimbang.</p>
+      <button type="button" class="next" id="next">Lanjut ▼</button>
+    </div>
+  </section>
+
+  <section id="quest">
+    <h2 class="sec">Quest Log <small>Pengalaman</small></h2>
+    <p class="hint">Klik label quest untuk melihat detailnya.</p>
+    <ol class="quests">
+      <li class="q active">
+        <button type="button" class="chip" aria-expanded="false">Berlangsung</button>
+        <div>
+          <h3>Ameliorer Informatika UNESA</h3>
+          <p>Mengerjakan tugas harian untuk melatih dasar pemrograman dan web. Quest saat ini: membuat web portofolio ini.</p>
+          <p class="more" hidden>Tantangan hari ini: menyelesaikan web portofolio dan mengumpulkannya sebelum 30 Oktober 2026 pukul 23.59 WIB.</p>
+          <span class="when">2026</span>
+        </div>
+      </li>
+      <li class="q">
+        <button type="button" class="chip" aria-expanded="false">Selesai</button>
+        <div>
+          <h3>Masuk Teknik Informatika UNESA</h3>
+          <p>Diterima sebagai mahasiswa dan mulai belajar dasar pemrograman dengan C++.</p>
+          <p class="more" hidden>Hadiah: +50 EXP dan awal perjalanan di dunia pemrograman.</p>
+          <span class="when">2026</span>
+        </div>
+      </li>
+      <li class="q lock">
+        <button type="button" class="chip">Terkunci</button>
+        <div>
+          <h3>Rilis game pertama</h3>
+          <p>Membuat game sederhana dengan C++ lalu mengunggahnya ke GitHub. Hadiah: +100 EXP dan project pertama masuk ke deck.</p>
+          <span class="when">Segera</span>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section id="status">
+    <h2 class="sec">Status <small>Kemampuan</small></h2>
+    <div class="statgrid">
+      <div class="panel">
+        <h3>Atribut</h3>
+        <div class="stat"><span>C++</span><div class="bar" data-lv="2" aria-hidden="true"></div><b>Lv 2</b></div>
+        <div class="stat"><span>VS Code</span><div class="bar" data-lv="3" aria-hidden="true"></div><b>Lv 3</b></div>
+        <div class="stat"><span>Git &amp; GitHub</span><div class="bar" data-lv="2" aria-hidden="true"></div><b>Lv 2</b></div>
+        <p class="note">Skala 1 sampai 10. Angkanya akan naik seiring project yang selesai.</p>
+      </div>
+      <div class="panel">
+        <h3>Awakening</h3>
+        <p class="note">Skill yang belum terbuka dan ingin saya kuasai.</p>
+        <ul class="locked">
+          <li><button type="button" class="lk" data-n="Bahasa pemrograman lain"><svg aria-hidden="true"><use href="#i-lock"/></svg>Bahasa pemrograman lain</button></li>
+          <li><button type="button" class="lk" data-n="Game engine"><svg aria-hidden="true"><use href="#i-lock"/></svg>Game engine</button></li>
+          <li><button type="button" class="lk" data-n="Analisis data game"><svg aria-hidden="true"><use href="#i-lock"/></svg>Analisis data game</button></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="gacha">
+    <h2 class="sec">Gacha <small>Kenali saya</small></h2>
+    <div class="panel gacha">
+      <div class="pcard" id="pcard" aria-live="polite"><div><span class="stars">Belum ada tarikan</span><p>Tekan tombol Tarik untuk mendapat satu fakta acak tentang saya.</p></div></div>
+      <div>
+        <div class="pullctl">
+          <button type="button" class="btn" id="pull">Tarik</button>
+          <span id="pullinfo">Tarikan 0, pity 0/5</span>
+        </div>
+        <p class="note">Lima tarikan tanpa SSR, tarikan berikutnya pasti SSR. <span id="collinfo">Koleksi fakta: 0/8.</span></p>
+        <ul class="slots" id="slots"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="deck">
+    <h2 class="sec">Deck <small>Project</small></h2>
+    <div class="deck">
+      <article class="gcard">
+        <span class="cost" aria-hidden="true">1</span>
+        <div class="art" aria-hidden="true">&lt;/&gt;</div>
+        <div class="gbody">
+          <h3>Web Portofolio</h3>
+          <p class="type">Skill: Web</p>
+          <p>Web portofolio pribadi untuk menampilkan profil, skill, dan project. Dibuat untuk tugas Ameliorer Informatika UNESA.</p>
+          <ul class="tags"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+          <div class="links">
+            <a href="https://github.com/Jauhar-SK/Web-Portofolio">Kode</a>
+            <a href="https://jauhar-sk.github.io/Web-Portofolio/">Demo</a>
+          </div>
+        </div>
+      </article>
+      <article class="gcard locked" tabindex="0" role="button" aria-label="Kartu terkunci: Game konsol dengan C++">
+        <span class="cost" aria-hidden="true">?</span>
+        <div class="art" aria-hidden="true">???</div>
+        <div class="gbody">
+          <h3>Game konsol dengan C++</h3>
+          <p class="type">Kartu terkunci: rencana</p>
+          <p>Project berikutnya: game sederhana di konsol untuk melatih logika dan struktur kode C++.</p>
+          <ul class="tags"><li>C++</li></ul>
+          <div class="links"><a href="https://github.com/Jauhar-SK">Pantau GitHub saya</a></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="kontak">
+    <h2 class="sec">Party Invite <small>Kontak</small></h2>
+    <div class="contact">
+      <ul class="ids">
+        <li><span>Email</span><a href="mailto:jauharalfahri01@gmail.com">jauharalfahri01@gmail.com</a></li>
+        <li><span>GitHub</span><a href="https://github.com/Jauhar-SK">github.com/Jauhar-SK</a></li>
+      </ul>
+      <form id="form-kontak" class="panel" novalidate>
+        <label>Nama
+          <input type="text" id="nama" required autocomplete="name">
+        </label>
+        <label>Email
+          <input type="email" id="email" required autocomplete="email">
+        </label>
+        <label>Pesan
+          <textarea id="pesan" required></textarea>
+        </label>
+        <button class="btn" type="submit">Kirim pesan</button>
+        <div id="status-form" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Data tersimpan. &copy; <span id="tahun">2026</span> Jauhar Al Fahri. Dibuat untuk tugas Ameliorer Informatika UNESA.</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  document.getElementById('tahun').textContent = new Date().getFullYear();
+
+  // Bar EXP di HUD mengikuti progres scroll
+  var exp = document.getElementById('exp');
+  var expBox = exp.parentNode;
+  function updateExp() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = max > 0 ? Math.min(100, Math.round(window.scrollY / max * 100)) : 0;
+    exp.style.width = pct + '%';
+    expBox.setAttribute('aria-valuenow', pct);
+  }
+  window.addEventListener('scroll', updateExp, { passive: true });
+  updateExp();
+
+  // Kartu karakter miring mengikuti kursor
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var wrap = document.getElementById('cardwrap');
+  var card = document.getElementById('char');
+  if (!reduce) {
+    wrap.addEventListener('pointermove', function (e) {
+      var r = wrap.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.setProperty('--ry', (x * 14) + 'deg');
+      card.style.setProperty('--rx', (-y * 14) + 'deg');
+      card.style.setProperty('--sx', (120 - (x + 0.5) * 140) + '%');
+    });
+    wrap.addEventListener('pointerleave', function () {
+      card.style.setProperty('--ry', '0deg');
+      card.style.setProperty('--rx', '0deg');
+      card.style.setProperty('--sx', '120%');
+    });
+  }
+
+  // Form kontak: membuka aplikasi email pengunjung
+  var EMAIL_TUJUAN = 'jauharalfahri01@gmail.com';
+  document.getElementById('form-kontak').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var nama = document.getElementById('nama').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var pesan = document.getElementById('pesan').value.trim();
+    var status = document.getElementById('status-form');
+    if (!nama || !email || !pesan) {
+      status.textContent = 'Isi nama, email, dan pesannya dulu ya.';
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      status.textContent = 'Format emailnya belum sesuai. Contoh: nama@domain.com';
+      return;
+    }
+    var subject = encodeURIComponent('Pesan dari ' + nama);
+    var body = encodeURIComponent(pesan + '\n\nDari: ' + nama + ' (' + email + ')');
+    window.location.href = 'mailto:' + EMAIL_TUJUAN + '?subject=' + subject + '&body=' + body;
+    status.textContent = 'Sedang membuka aplikasi emailmu...';
+  });
+
+  // ===== Interaksi tambahan =====
+  var toastEl = document.getElementById('toast'), toastT;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastT);
+    toastT = setTimeout(function () { toastEl.classList.remove('show'); }, 2600);
+  }
+  function shake(el) {
+    if (reduce) return;
+    el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
+  }
+  function onView(el, cb, th) {
+    if (!('IntersectionObserver' in window)) { cb(); return; }
+    var o = new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) { o.disconnect(); cb(); }
+    }, { threshold: th || 0.3 });
+    o.observe(el);
+  }
+
+  // Rank: klik untuk melihat perjalanannya
+  (function () {
+    var btns = [].slice.call(document.querySelectorAll('.rk'));
+    var info = document.getElementById('rankinfo');
+    var txt = [
+      'Rank saat ini (Warrior): sedang belajar dasar C++ dan membangun fondasi logika pemrograman.',
+      'Target (Elite): mampu membuat game konsol sederhana dengan C++ sebagai project pertama.',
+      'Target (Master): menguasai satu game engine dan membuat game dengan tampilan grafis.',
+      'Target (Grandmaster): punya beberapa game yang sudah selesai dan dibagikan di GitHub.',
+      'Target (Epic): terbiasa bekerja dalam tim pengembang game dan membaca data pemain.',
+      'Target (Legend): dipercaya memegang bagian penting dalam pengembangan sebuah game.',
+      'Target (Mythic): menjadi game developer yang game-nya dimainkan banyak orang. Ini tujuan akhir saya.'
+    ];
+    btns.forEach(function (b, i) {
+      b.addEventListener('click', function () {
+        btns.forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+        b.setAttribute('aria-pressed', 'true');
+        info.textContent = txt[i];
+      });
+    });
+  })();
+
+  // Lore: dialog diketik, klik Lanjut untuk paragraf berikutnya
+  (function () {
+    var box = document.getElementById('dialog');
+    var btn = document.getElementById('next');
+    var lines = [].slice.call(box.querySelectorAll('p.line'));
+    var full = lines.map(function (p) { return p.textContent.trim(); });
+    lines.forEach(function (p, i) {
+      p.innerHTML = '<span class="sr"></span><span class="tw" aria-hidden="true"></span>';
+      p.querySelector('.sr').textContent = full[i];
+    });
+    function tw(i) { return lines[i].querySelector('.tw'); }
+    if (reduce) {
+      lines.forEach(function (p, i) { tw(i).textContent = full[i]; });
+      btn.hidden = true;
+      return;
+    }
+    var idx = 0, typing = false, timer;
+    lines.forEach(function (p) { p.hidden = true; });
+    btn.hidden = true;
+    function finish() {
+      clearInterval(timer); typing = false;
+      tw(idx).textContent = full[idx];
+      btn.textContent = idx < lines.length - 1 ? 'Lanjut ▼' : 'Ulangi ↺';
+    }
+    function typeLine(i) {
+      idx = i; typing = true;
+      lines[i].hidden = false; btn.hidden = false; btn.textContent = 'Lewati';
+      var n = 0;
+      clearInterval(timer);
+      timer = setInterval(function () {
+        n++; tw(i).textContent = full[i].slice(0, n);
+        if (n >= full[i].length) finish();
+      }, 16);
+    }
+    btn.addEventListener('click', function () {
+      if (typing) { finish(); return; }
+      if (idx < lines.length - 1) { typeLine(idx + 1); return; }
+      lines.forEach(function (p, i) { p.hidden = true; tw(i).textContent = ''; });
+      typeLine(0);
+    });
+    onView(box, function () { typeLine(0); }, 0.4);
+  })();
+
+  // Quest: klik label untuk detail, quest terkunci bergetar
+  document.querySelectorAll('.q .chip').forEach(function (chip) {
+    var q = chip.closest('.q');
+    var more = q.querySelector('.more');
+    chip.addEventListener('click', function () {
+      if (!more) {
+        shake(q);
+        toast('Quest ini masih terkunci. Selesaikan quest Ameliorer dulu ya.');
+        return;
+      }
+      var open = more.hidden;
+      more.hidden = !open;
+      chip.setAttribute('aria-expanded', String(open));
+    });
+  });
+
+  // Bar atribut: kotak menyala satu per satu saat terlihat
+  document.querySelectorAll('.bar').forEach(function (bar) {
+    var lv = parseInt(bar.getAttribute('data-lv'), 10) || 0, cells = [];
+    for (var i = 0; i < 10; i++) { var c = document.createElement('i'); bar.appendChild(c); cells.push(c); }
+    onView(bar, function () {
+      cells.forEach(function (c, i) {
+        if (i < lv) setTimeout(function () { c.className = 'on'; }, reduce ? 0 : i * 110);
+      });
+    }, 0.6);
+  });
+
+  // Skill terkunci
+  document.querySelectorAll('.lk').forEach(function (b) {
+    b.addEventListener('click', function () {
+      shake(b);
+      toast(b.getAttribute('data-n') + ' belum terbuka. Masih dalam proses belajar.');
+    });
+  });
+
+  // Kartu deck: miring saat disentuh kursor, kartu terkunci bergetar
+  document.querySelectorAll('.gcard:not(.locked)').forEach(function (el) {
+    if (reduce) return;
+    el.addEventListener('pointermove', function (e) {
+      var r = el.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5;
+      var y = (e.clientY - r.top) / r.height - 0.5;
+      el.style.setProperty('--ry', (x * 8) + 'deg');
+      el.style.setProperty('--rx', (-y * 8) + 'deg');
+    });
+    el.addEventListener('pointerleave', function () {
+      el.style.setProperty('--ry', '0deg');
+      el.style.setProperty('--rx', '0deg');
+    });
+  });
+  var lockedCard = document.querySelector('.gcard.locked');
+  function lockedMsg() {
+    shake(lockedCard);
+    toast('Kartu terkunci. Selesaikan quest "Rilis game pertama" dulu.');
+  }
+  lockedCard.addEventListener('click', lockedMsg);
+  lockedCard.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lockedMsg(); }
+  });
+
+  // Gacha: tarik fakta acak
+  (function () {
+    var facts = [
+      { r: 'r',   n: 'Kampus',   x: 'Saya kuliah di Teknik Informatika UNESA, angkatan 2026.' },
+      { r: 'r',   n: 'Party',    x: 'Party Ameliorer saya adalah 02-Encryption.' },
+      { r: 'r',   n: 'Editor',   x: 'Editor andalan saya adalah VS Code.' },
+      { r: 'sr',  n: 'Senjata',  x: 'Senjata utama saya adalah C++.' },
+      { r: 'sr',  n: 'GitHub',   x: 'Akun GitHub saya Jauhar-SK. Mampir ya, isinya akan terus bertambah.' },
+      { r: 'sr',  n: 'Analyst',  x: 'Saya juga tertarik menjadi game analyst, yaitu membaca data pemain supaya game makin seimbang.' },
+      { r: 'ssr', n: 'Cita-cita', x: 'Cita-cita saya menjadi game developer.' },
+      { r: 'ssr', n: 'Target',   x: 'Target rank saya Mythic. Perjalanannya baru dimulai!' }
+    ];
+    var label = { r: '★★★ R', sr: '★★★★ SR', ssr: '★★★★★ SSR' };
+    var pcard = document.getElementById('pcard');
+    var pull = document.getElementById('pull');
+    var pinfo = document.getElementById('pullinfo');
+    var cinfo = document.getElementById('collinfo');
+    var slotsEl = document.getElementById('slots');
+    var slots = facts.map(function () {
+      var li = document.createElement('li'); li.className = 'slot'; li.textContent = '?';
+      slotsEl.appendChild(li); return li;
+    });
+    var pulls = 0, pity = 0, got = {}, count = 0;
+
+    function pick() {
+      var rar;
+      if (pity >= 5) rar = 'ssr';
+      else { var roll = Math.random(); rar = roll < 0.1 ? 'ssr' : roll < 0.4 ? 'sr' : 'r'; }
+      var pool = facts.filter(function (f) { return f.r === rar; });
+      return facts.indexOf(pool[Math.floor(Math.random() * pool.length)]);
+    }
+    function reveal() {
+      var i = pick(), f = facts[i];
+      pulls++; pity = f.r === 'ssr' ? 0 : pity + 1;
+      pcard.className = 'pcard ' + f.r;
+      pcard.innerHTML = '<div><span class="stars"></span><p></p></div>';
+      pcard.querySelector('.stars').textContent = label[f.r];
+      pcard.querySelector('p').textContent = f.x;
+      if (!got[i]) {
+        got[i] = true; count++;
+        slots[i].className = 'slot ' + f.r; slots[i].textContent = f.n;
+        if (count === facts.length) toast('Koleksi lengkap! Terima kasih sudah mampir.');
+      }
+      pinfo.textContent = 'Tarikan ' + pulls + ', pity ' + pity + '/5';
+      cinfo.textContent = 'Koleksi fakta: ' + count + '/' + facts.length + '.';
+      pull.disabled = false;
+    }
+    pull.addEventListener('click', function () {
+      pull.disabled = true;
+      pcard.className = 'pcard' + (reduce ? '' : ' spin');
+      pcard.innerHTML = '<div><span class="stars">Menarik...</span></div>';
+      setTimeout(reveal, reduce ? 0 : 850);
+    });
+  })();
+
+  // Level naik setiap bagian baru dikunjungi
+  (function () {
+    var lvl = 1;
+    var hud = document.getElementById('lvhud'), card = document.getElementById('lvcard');
+    ['lore', 'quest', 'status', 'gacha', 'deck', 'kontak'].forEach(function (id) {
+      onView(document.getElementById(id), function () {
+        lvl++;
+        hud.textContent = 'Lv. ' + lvl; card.textContent = 'Lv. ' + lvl;
+        toast('Level up! Sekarang Lv. ' + lvl);
+      }, 0.3);
+    });
+  })();
+</script>
+</body>
+</html>
