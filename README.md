@@ -3,9 +3,10 @@
 Web portofolio bertema game untuk penugasan Ameliorer Informatika UNESA 2026.
 
 ## Isi
-- Profil dan Lore
+- About Me (nama, NIM, prodi, pendidikan, aktivitas) dan Lore
 - Quest Log (pengalaman)
-- Status dan skill
+- What I Can Do (status, skill, tools)
+- Achievement
 - Gacha fakta tentang saya
 - Deck project
 - Kontak
